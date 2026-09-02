@@ -3,13 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Para ti</title>
+<title>Para ti, mi consentida</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg-a:#050714;
-    --bg-b:#0a0e24;
     --star:#eef1ff;
     --gold:#e7c07a;
     --rose:#e6a5b8;
@@ -17,42 +16,53 @@
     --dim:#9aa0c0;
   }
   *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;background:var(--bg-a);color:var(--ink);font-family:'Quicksand',sans-serif;overflow-x:hidden;scroll-behavior:smooth;}
+  html{background:var(--bg-a);}
+  html.bloqueado, html.bloqueado body{height:100%;overflow:hidden;}
+  body{margin:0;padding:0;color:var(--ink);font-family:'Quicksand',sans-serif;overflow-x:hidden;min-height:100vh;}
   h1,h2,.serif{font-family:'Cormorant Garamond',serif;}
-  section{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6vh 6vw;text-align:center;}
-  #stars{position:fixed;inset:0;z-index:0;}
-  .content{position:relative;z-index:2;max-width:640px;}
 
-  /* HERO */
-  #hero h1{font-size:clamp(2.4rem,7vw,4.2rem);font-weight:600;letter-spacing:.02em;margin:0 0 .4rem;
-    background:linear-gradient(90deg,var(--star),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;}
-  #hero p{color:var(--dim);font-size:1.05rem;margin-top:1rem;}
-  .flecha{margin-top:3rem;width:22px;height:22px;border-right:2px solid var(--dim);border-bottom:2px solid var(--dim);
-    transform:rotate(45deg);animation:bob 1.8s ease-in-out infinite;}
-  @keyframes bob{0%,100%{transform:rotate(45deg) translate(0,0);}50%{transform:rotate(45deg) translate(6px,6px);}}
+  /* ---------- LA UNICA FOTO: el universo, fondo fijo de toda la pagina ---------- */
+  #universo{position:fixed;inset:0;z-index:0;overflow:hidden;background:#04050c;}
+  #universo svg{width:100%;height:100%;display:block;}
 
-  /* CARTA INTRO */
-  #intro p{font-size:1.25rem;line-height:1.8;font-family:'Cormorant Garamond',serif;color:var(--ink);}
-  #intro .firma{margin-top:2rem;color:var(--gold);font-style:italic;}
+  /* ---------- ESCENARIO: la experiencia inicial, pantalla completa, una cosa a la vez ---------- */
+  #escenario{position:fixed;inset:0;z-index:5;}
+  .capa{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:8vw;opacity:0;pointer-events:none;transition:opacity 1.8s ease;}
+  .capa.activa{opacity:1;pointer-events:auto;}
+  #escenario.oculto{opacity:0;pointer-events:none;transition:opacity 1.4s ease;}
 
-  /* EXPERIENCIA */
-  #experiencia{padding-bottom:10vh;}
-  .escena{position:relative;width:min(90vw,720px);height:56vh;border-radius:18px;overflow:hidden;
-    background:radial-gradient(ellipse at 50% 100%,#141a3a,transparent 70%);border:1px solid rgba(255,255,255,.08);}
-  #cielo-cats{position:absolute;inset:0;transition:background 1.4s linear;}
-  .gato{position:absolute;bottom:8%;width:70px;height:auto;filter:drop-shadow(0 4px 10px rgba(0,0,0,.4));}
+  #capaPortal{cursor:pointer;}
+  #hintPortal{opacity:0;font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--dim);
+    font-size:.95rem;letter-spacing:.03em;transition:opacity 2s ease;}
+  #hintPortal.mostrar{opacity:.65;}
+
+  #capaCierraOjos p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.5rem;color:var(--ink);max-width:520px;}
+
+  #capaRecuerdo p{font-family:'Cormorant Garamond',serif;font-size:1.18rem;line-height:1.9;color:var(--ink);max-width:600px;}
+
+  #capaExperiencia{gap:1.2rem;}
+  .escena{position:relative;width:min(92vw,760px);height:52vh;}
+  #ambiente{position:absolute;inset:-10%;border-radius:50%;background:radial-gradient(ellipse at 50% 60%,rgba(20,26,58,0) 0%,rgba(20,26,58,0) 100%);
+    mix-blend-mode:screen;transition:background 1.4s linear;pointer-events:none;}
+  .gato{position:absolute;bottom:10%;width:64px;height:auto;filter:drop-shadow(0 4px 10px rgba(0,0,0,.5));}
   #gatoBlanco{left:36%;animation:andarB 5s ease-in-out infinite;}
   #gatoNegro{left:52%;animation:andarN 5s ease-in-out infinite .3s;}
-  .gato.pausado, .ovillo.pausado{animation-play-state:paused;}
   @keyframes andarB{0%,100%{transform:translateX(0) scaleX(1);}25%{transform:translateX(30px) scaleX(1) rotate(-3deg);}50%{transform:translateX(50px) scaleX(-1);}75%{transform:translateX(20px) scaleX(-1) rotate(3deg);}}
   @keyframes andarN{0%,100%{transform:translateX(0) scaleX(-1);}25%{transform:translateX(-25px) scaleX(-1) rotate(3deg);}50%{transform:translateX(-45px) scaleX(1);}75%{transform:translateX(-15px) scaleX(1) rotate(-3deg);}}
-  .ovillo{position:absolute;bottom:10%;left:44%;width:22px;height:22px;border-radius:50%;
+  .ovillo{position:absolute;bottom:12%;left:44%;width:20px;height:20px;border-radius:50%;
     background:repeating-conic-gradient(#e6a5b8 0deg 15deg,#c98198 15deg 30deg);animation:rueda 3.4s linear infinite;}
   @keyframes rueda{0%{transform:rotate(0) translateX(0);}50%{transform:rotate(180deg) translateX(15px);}100%{transform:rotate(360deg) translateX(0);}}
 
-  .audio-central{position:absolute;top:42%;left:50%;transform:translate(-50%,-50%);display:flex;
+  .foto{position:absolute;width:104px;height:104px;object-fit:cover;border-radius:10px;border:4px solid #fff;
+    box-shadow:0 8px 22px rgba(0,0,0,.5);opacity:0;transform:scale(.7) rotate(-6deg);transition:opacity 1.2s ease,transform 1.2s ease;}
+  .foto.show{opacity:1;transform:scale(1) rotate(var(--rot,-4deg));}
+
+  .subtitulo{min-height:1.4em;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:var(--ink);opacity:.92;}
+
+  .audio-central{position:absolute;top:40%;left:50%;transform:translate(-50%,-50%);display:flex;
     align-items:center;gap:6px;opacity:0;transition:opacity .8s ease;pointer-events:none;}
-  .audio-central .onda{width:6px;height:16px;border-radius:4px;background:var(--gold);opacity:.85;}
+  .audio-central .onda{width:5px;height:14px;border-radius:4px;background:var(--gold);opacity:.85;}
   .audio-central.activo{opacity:1;}
   .audio-central.activo .onda{animation:ondaMov 1s ease-in-out infinite;}
   .audio-central .onda:nth-child(1){animation-delay:0s;}
@@ -60,35 +70,19 @@
   .audio-central .onda:nth-child(3){animation-delay:.24s;}
   .audio-central .onda:nth-child(4){animation-delay:.12s;}
   .audio-central .onda:nth-child(5){animation-delay:0s;}
-  @keyframes ondaMov{0%,100%{height:14px;}50%{height:38px;}}
+  @keyframes ondaMov{0%,100%{height:12px;}50%{height:34px;}}
 
-  .foto{position:absolute;width:110px;height:110px;object-fit:cover;border-radius:10px;border:4px solid #fff;
-    box-shadow:0 8px 22px rgba(0,0,0,.5);opacity:0;transform:scale(.7) rotate(-6deg);transition:opacity 1.2s ease,transform 1.2s ease;}
-  .foto.show{opacity:1;transform:scale(1) rotate(var(--rot,-4deg));}
-  .foto-fallback{display:flex;align-items:center;justify-content:center;background:#1b2040;color:var(--dim);font-size:.7rem;text-align:center;padding:6px;}
-
-  .reproductor{margin-top:1.6rem;display:flex;align-items:center;gap:1rem;color:var(--dim);font-size:.9rem;}
-  #playBtn{width:52px;height:52px;border-radius:50%;border:1px solid var(--gold);background:transparent;color:var(--gold);
-    font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.25s;}
-  #playBtn:hover{background:var(--gold);color:#0a0e24;}
-  #barra{width:200px;height:3px;background:rgba(255,255,255,.15);border-radius:3px;overflow:hidden;}
-  #barra > div{height:100%;width:0%;background:linear-gradient(90deg,var(--rose),var(--gold));}
-  .subtitulo{margin-top:1rem;min-height:1.4em;font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--ink);opacity:.9;}
-
-  /* CORAZON */
-  #corazon-wrap{margin-top:2.4rem;display:none;flex-direction:column;align-items:center;gap:.6rem;}
-  #corazon-wrap.visible{display:flex;animation:aparecer 1.4s ease;}
-  @keyframes aparecer{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
-  #corazonBtn{cursor:pointer;filter:drop-shadow(0 0 14px rgba(230,165,184,.55));transition:transform .3s;}
+  #capaCorazon{gap:.7rem;}
+  #corazonBtn{cursor:pointer;filter:drop-shadow(0 0 16px rgba(230,165,184,.6));transition:transform .3s;}
   #corazonBtn:hover{transform:scale(1.06);}
-  #corazon-wrap span{color:var(--dim);font-size:.85rem;}
+  #capaCorazon span{color:var(--dim);font-size:.85rem;}
 
-  /* MODAL */
-  .modal-fondo{position:fixed;inset:0;background:rgba(4,5,15,.88);backdrop-filter:blur(4px);z-index:10;
+  /* ---------- MODAL clave ---------- */
+  .modal-fondo{position:fixed;inset:0;background:rgba(4,5,15,.9);backdrop-filter:blur(4px);z-index:20;
     display:none;align-items:center;justify-content:center;padding:5vw;}
   .modal-fondo.abierto{display:flex;}
   .modal{background:#0d1130;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:2.2rem;max-width:420px;width:100%;}
-  .modal h3{margin-top:0;font-weight:600;font-size:1.3rem;}
+  .modal h3{margin-top:0;font-weight:600;font-size:1.25rem;}
   .modal label{display:block;text-align:left;font-size:.85rem;color:var(--dim);margin:.9rem 0 .3rem;}
   .modal input{width:100%;padding:.55rem .7rem;border-radius:8px;border:1px solid rgba(255,255,255,.15);
     background:#141838;color:var(--ink);font-family:'Quicksand',sans-serif;}
@@ -96,21 +90,38 @@
     color:#0a0e24;font-weight:600;cursor:pointer;}
   #errorMsg{color:var(--rose);font-size:.8rem;height:1.2em;margin-top:.4rem;}
 
-  /* CARTA FINAL */
+  /* ---------- contenido normal, sobre el fondo fijo del universo ---------- */
+  section{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;align-items:center;
+    justify-content:center;padding:8vh 6vw;text-align:center;}
+  .content{position:relative;max-width:640px;}
+
   #carta-final{display:none;}
   #carta-final.visible{display:flex;}
-  .pergamino{background:linear-gradient(160deg,#12163a,#0a0e24);border:1px solid rgba(231,192,122,.25);
+  .pergamino{background:linear-gradient(160deg,rgba(18,22,58,.92),rgba(10,14,36,.92));border:1px solid rgba(231,192,122,.25);
     border-radius:20px;padding:3rem 2.2rem;text-align:left;font-family:'Cormorant Garamond',serif;font-size:1.18rem;line-height:1.85;}
   .pergamino p{margin:0 0 1.1rem;}
-  .gatito-final{margin-top:2rem;display:flex;flex-direction:column;align-items:center;}
+  .pergamino p.firma-carta{font-family:'Quicksand',sans-serif;font-size:1.05rem;color:var(--rose);margin-top:1.6rem;}
+
+  .gatito-final{margin-top:2.4rem;display:flex;flex-direction:column;align-items:center;opacity:0;transform:translateY(24px);
+    transition:opacity 1.4s ease,transform 1.4s ease;}
+  .gatito-final.visto{opacity:1;transform:translateY(0);}
   .gatito-final p{font-family:'Quicksand',sans-serif;font-size:1rem;color:var(--gold);margin-top:.4rem;}
+  .gatito-final .pista{font-size:.82rem;color:var(--dim);margin-top:.3rem;}
+  .mini-celular{cursor:pointer;}
+  .glow-cel{animation:pulsoGlow 1.8s ease-in-out infinite;}
+  @keyframes pulsoGlow{0%,100%{opacity:.25;}50%{opacity:.6;}}
 
-  /* VIDEO */
-  #video-sec video{width:min(90vw,520px);border-radius:16px;border:1px solid rgba(255,255,255,.1);}
-  .guion{margin-top:1.4rem;text-align:left;font-size:.95rem;color:var(--dim);background:rgba(255,255,255,.03);
-    border-radius:10px;padding:1rem 1.3rem;max-width:520px;}
+  /* ---------- VIDEO modal ---------- */
+  .video-fondo{position:fixed;inset:0;background:rgba(4,5,15,.94);backdrop-filter:blur(5px);z-index:25;
+    display:none;align-items:center;justify-content:center;padding:5vw;}
+  .video-fondo.abierto{display:flex;}
+  .video-caja{position:relative;max-width:560px;width:100%;text-align:center;}
+  .video-titulo{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.5rem;color:var(--ink);margin:0 0 1.2rem;}
+  .video-caja video{width:100%;border-radius:16px;border:1px solid rgba(255,255,255,.12);background:#000;}
+  #cerrarVideo{position:absolute;top:-2.4rem;right:0;background:none;border:none;color:var(--dim);font-size:1.8rem;
+    cursor:pointer;line-height:1;}
 
-  /* PROPUESTA */
+  /* ---------- PROPUESTA ---------- */
   #propuesta h2{font-size:clamp(1.8rem,5vw,2.6rem);}
   #propuesta p{color:var(--dim);margin-top:.8rem;line-height:1.7;}
   .botones{margin-top:2.2rem;display:flex;gap:1.2rem;justify-content:center;position:relative;height:60px;}
@@ -122,104 +133,337 @@
 </head>
 <body>
 
-<canvas id="stars"></canvas>
+<!-- la unica foto: un cielo de universo, fijo detras de toda la experiencia -->
+<div id="universo">
+  <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="nebulaA" cx="22%" cy="24%" r="60%">
+        <stop offset="0%" stop-color="#2a2560" stop-opacity="0.85"/>
+        <stop offset="100%" stop-color="#050714" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="nebulaB" cx="78%" cy="70%" r="55%">
+        <stop offset="0%" stop-color="#122a4a" stop-opacity="0.75"/>
+        <stop offset="100%" stop-color="#050714" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="nebulaRosa" cx="68%" cy="16%" r="30%">
+        <stop offset="0%" stop-color="#7a3f55" stop-opacity="0.35"/>
+        <stop offset="100%" stop-color="#050714" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="anillo" cx="50%" cy="50%" r="50%">
+        <stop offset="60%" stop-color="#000" stop-opacity="0"/>
+        <stop offset="86%" stop-color="#e7c07a" stop-opacity="0.55"/>
+        <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <rect width="1600" height="900" fill="#050612"/>
+    <rect width="1600" height="900" fill="url(#nebulaA)"/>
+    <rect width="1600" height="900" fill="url(#nebulaB)"/>
+    <rect width="1600" height="900" fill="url(#nebulaRosa)"/>
+    <!-- eco muy sutil de un horizonte de eventos, para quien sabe de Interstellar -->
+    <circle cx="1310" cy="150" r="70" fill="url(#anillo)"/>
+    <g>
+      <circle cx="1023.1" cy="22.5" r="0.84" fill="#eef1ff" opacity="0.41"/>
+      <circle cx="1178.4" cy="609.0" r="1.83" fill="#eef1ff" opacity="0.31"/>
+      <circle cx="675.1" cy="26.8" r="0.75" fill="#eef1ff" opacity="0.6"/>
+      <circle cx="42.5" cy="179.0" r="1.44" fill="#eef1ff" opacity="0.63"/>
+      <circle cx="352.7" cy="530.3" r="1.7" fill="#eef1ff" opacity="0.25"/>
+      <circle cx="1289.3" cy="628.3" r="0.94" fill="#eef1ff" opacity="0.36"/>
+      <circle cx="1531.5" cy="302.9" r="0.55" fill="#eef1ff" opacity="0.32"/>
+      <circle cx="1356.0" cy="543.4" r="1.69" fill="#eef1ff" opacity="0.76"/>
+      <circle cx="858.0" cy="875.8" r="1.01" fill="#eef1ff" opacity="0.64"/>
+      <circle cx="1327.0" cy="556.7" r="1.78" fill="#eef1ff" opacity="0.65"/>
+      <circle cx="1127.3" cy="41.2" r="0.76" fill="#eef1ff" opacity="0.45"/>
+      <circle cx="127.7" cy="209.5" r="0.56" fill="#eef1ff" opacity="0.44"/>
+      <circle cx="1017.1" cy="328.3" r="0.99" fill="#eef1ff" opacity="0.4"/>
+      <circle cx="427.2" cy="843.0" r="1.44" fill="#eef1ff" opacity="0.68"/>
+      <circle cx="273.8" cy="656.2" r="0.66" fill="#eef1ff" opacity="0.52"/>
+      <circle cx="1583.2" cy="576.0" r="1.29" fill="#eef1ff" opacity="0.73"/>
+      <circle cx="1348.6" cy="698.4" r="0.77" fill="#eef1ff" opacity="0.27"/>
+      <circle cx="504.7" cy="241.0" r="0.74" fill="#eef1ff" opacity="0.91"/>
+      <circle cx="1402.2" cy="283.2" r="1.45" fill="#eef1ff" opacity="0.53"/>
+      <circle cx="1463.3" cy="413.0" r="0.82" fill="#eef1ff" opacity="0.42"/>
+      <circle cx="898.2" cy="236.5" r="1.34" fill="#eef1ff" opacity="0.88"/>
+      <circle cx="639.0" cy="197.4" r="2.0" fill="#eef1ff" opacity="0.61"/>
+      <circle cx="145.5" cy="42.4" r="0.58" fill="#eef1ff" opacity="0.69"/>
+      <circle cx="1267.3" cy="379.9" r="0.5" fill="#eef1ff" opacity="0.52"/>
+      <circle cx="1593.8" cy="476.2" r="1.95" fill="#eef1ff" opacity="0.85"/>
+      <circle cx="18.4" cy="648.6" r="1.49" fill="#eef1ff" opacity="0.63"/>
+      <circle cx="426.9" cy="576.9" r="0.58" fill="#eef1ff" opacity="0.55"/>
+      <circle cx="726.0" cy="858.4" r="1.8" fill="#eef1ff" opacity="0.43"/>
+      <circle cx="800.9" cy="160.8" r="1.86" fill="#eef1ff" opacity="0.86"/>
+      <circle cx="477.5" cy="575.1" r="1.37" fill="#eef1ff" opacity="0.36"/>
+      <circle cx="1220.0" cy="485.4" r="1.65" fill="#eef1ff" opacity="0.62"/>
+      <circle cx="0.9" cy="291.7" r="0.43" fill="#eef1ff" opacity="0.9"/>
+      <circle cx="1406.0" cy="748.5" r="0.89" fill="#eef1ff" opacity="0.29"/>
+      <circle cx="1404.8" cy="852.3" r="0.54" fill="#eef1ff" opacity="0.59"/>
+      <circle cx="110.7" cy="684.5" r="1.63" fill="#eef1ff" opacity="0.34"/>
+      <circle cx="760.5" cy="494.8" r="0.82" fill="#eef1ff" opacity="0.86"/>
+      <circle cx="677.0" cy="190.6" r="1.26" fill="#eef1ff" opacity="0.76"/>
+      <circle cx="321.8" cy="280.5" r="1.99" fill="#eef1ff" opacity="0.7"/>
+      <circle cx="701.0" cy="465.8" r="0.59" fill="#eef1ff" opacity="0.41"/>
+      <circle cx="540.9" cy="529.5" r="0.77" fill="#eef1ff" opacity="0.4"/>
+      <circle cx="113.6" cy="568.0" r="0.77" fill="#eef1ff" opacity="0.88"/>
+      <circle cx="1375.4" cy="63.8" r="0.78" fill="#eef1ff" opacity="0.72"/>
+      <circle cx="342.8" cy="119.1" r="1.9" fill="#eef1ff" opacity="0.65"/>
+      <circle cx="756.3" cy="706.2" r="1.69" fill="#eef1ff" opacity="0.38"/>
+      <circle cx="155.1" cy="387.9" r="1.08" fill="#eef1ff" opacity="0.58"/>
+      <circle cx="1166.5" cy="606.0" r="1.97" fill="#eef1ff" opacity="0.32"/>
+      <circle cx="644.2" cy="305.4" r="1.78" fill="#eef1ff" opacity="0.42"/>
+      <circle cx="304.3" cy="403.8" r="1.08" fill="#eef1ff" opacity="0.44"/>
+      <circle cx="399.7" cy="830.9" r="1.11" fill="#eef1ff" opacity="0.85"/>
+      <circle cx="880.5" cy="45.5" r="2.0" fill="#eef1ff" opacity="0.84"/>
+      <circle cx="1550.4" cy="833.7" r="1.76" fill="#eef1ff" opacity="0.37"/>
+      <circle cx="777.0" cy="192.4" r="1.04" fill="#eef1ff" opacity="0.29"/>
+      <circle cx="606.4" cy="886.8" r="0.82" fill="#eef1ff" opacity="0.8"/>
+      <circle cx="728.0" cy="380.7" r="1.93" fill="#eef1ff" opacity="0.95"/>
+      <circle cx="889.2" cy="646.6" r="0.65" fill="#eef1ff" opacity="0.46"/>
+      <circle cx="1549.9" cy="521.3" r="1.27" fill="#eef1ff" opacity="0.77"/>
+      <circle cx="91.5" cy="525.8" r="1.2" fill="#eef1ff" opacity="0.85"/>
+      <circle cx="251.9" cy="864.7" r="0.53" fill="#eef1ff" opacity="0.38"/>
+      <circle cx="952.1" cy="607.7" r="0.78" fill="#eef1ff" opacity="0.33"/>
+      <circle cx="1424.5" cy="221.6" r="1.35" fill="#eef1ff" opacity="0.68"/>
+      <circle cx="670.8" cy="525.3" r="1.24" fill="#eef1ff" opacity="0.9"/>
+      <circle cx="326.8" cy="644.6" r="0.78" fill="#eef1ff" opacity="0.53"/>
+      <circle cx="1074.7" cy="270.0" r="0.91" fill="#eef1ff" opacity="0.78"/>
+      <circle cx="116.1" cy="412.5" r="2.0" fill="#eef1ff" opacity="0.95"/>
+      <circle cx="117.2" cy="191.8" r="0.82" fill="#eef1ff" opacity="0.9"/>
+      <circle cx="1409.4" cy="791.3" r="0.99" fill="#eef1ff" opacity="0.36"/>
+      <circle cx="1334.0" cy="633.2" r="1.38" fill="#eef1ff" opacity="0.94"/>
+      <circle cx="1046.4" cy="7.0" r="1.71" fill="#eef1ff" opacity="0.46"/>
+      <circle cx="1061.4" cy="845.0" r="0.61" fill="#eef1ff" opacity="0.33"/>
+      <circle cx="171.3" cy="497.9" r="0.84" fill="#eef1ff" opacity="0.67"/>
+      <circle cx="1148.2" cy="183.2" r="1.41" fill="#eef1ff" opacity="0.43"/>
+      <circle cx="781.7" cy="814.8" r="1.75" fill="#eef1ff" opacity="0.31"/>
+      <circle cx="677.7" cy="249.0" r="0.41" fill="#eef1ff" opacity="0.79"/>
+      <circle cx="1019.4" cy="235.8" r="1.59" fill="#eef1ff" opacity="0.64"/>
+      <circle cx="684.3" cy="8.7" r="0.52" fill="#eef1ff" opacity="0.87"/>
+      <circle cx="1446.3" cy="491.0" r="1.74" fill="#eef1ff" opacity="0.66"/>
+      <circle cx="237.0" cy="114.7" r="0.89" fill="#eef1ff" opacity="0.88"/>
+      <circle cx="1273.8" cy="774.6" r="1.84" fill="#eef1ff" opacity="0.4"/>
+      <circle cx="399.2" cy="92.5" r="1.65" fill="#eef1ff" opacity="0.87"/>
+      <circle cx="650.2" cy="558.6" r="0.65" fill="#eef1ff" opacity="0.9"/>
+      <circle cx="1383.4" cy="878.6" r="1.7" fill="#eef1ff" opacity="0.87"/>
+      <circle cx="39.7" cy="662.9" r="0.93" fill="#eef1ff" opacity="0.9"/>
+      <circle cx="1283.6" cy="777.7" r="1.7" fill="#eef1ff" opacity="0.44"/>
+      <circle cx="1259.8" cy="97.3" r="1.8" fill="#eef1ff" opacity="0.85"/>
+      <circle cx="355.9" cy="734.9" r="1.14" fill="#eef1ff" opacity="0.46"/>
+      <circle cx="1272.6" cy="204.8" r="0.44" fill="#eef1ff" opacity="0.39"/>
+      <circle cx="525.2" cy="777.9" r="1.95" fill="#eef1ff" opacity="0.45"/>
+      <circle cx="1026.4" cy="359.7" r="1.97" fill="#eef1ff" opacity="0.63"/>
+      <circle cx="1502.8" cy="103.8" r="1.95" fill="#eef1ff" opacity="0.37"/>
+      <circle cx="1540.1" cy="238.9" r="0.57" fill="#eef1ff" opacity="0.55"/>
+      <circle cx="1165.7" cy="282.3" r="1.37" fill="#eef1ff" opacity="0.61"/>
+      <circle cx="616.3" cy="518.9" r="0.81" fill="#eef1ff" opacity="0.75"/>
+      <circle cx="2.7" cy="833.0" r="1.26" fill="#eef1ff" opacity="0.75"/>
+      <circle cx="1187.1" cy="603.6" r="0.98" fill="#eef1ff" opacity="0.3"/>
+      <circle cx="1062.8" cy="297.2" r="0.9" fill="#eef1ff" opacity="0.84"/>
+      <circle cx="1151.6" cy="270.3" r="0.89" fill="#eef1ff" opacity="0.54"/>
+      <circle cx="643.8" cy="266.1" r="0.6" fill="#eef1ff" opacity="0.54"/>
+      <circle cx="1504.6" cy="609.6" r="1.84" fill="#eef1ff" opacity="0.68"/>
+      <circle cx="481.5" cy="493.1" r="0.4" fill="#eef1ff" opacity="0.45"/>
+      <circle cx="687.8" cy="522.0" r="1.45" fill="#eef1ff" opacity="0.58"/>
+      <circle cx="707.5" cy="192.3" r="1.16" fill="#eef1ff" opacity="0.88"/>
+      <circle cx="1273.6" cy="152.7" r="0.54" fill="#eef1ff" opacity="0.61"/>
+      <circle cx="1012.7" cy="301.7" r="1.71" fill="#eef1ff" opacity="0.78"/>
+      <circle cx="1076.5" cy="202.2" r="0.72" fill="#eef1ff" opacity="0.27"/>
+      <circle cx="391.7" cy="427.6" r="1.76" fill="#eef1ff" opacity="0.3"/>
+      <circle cx="663.1" cy="566.8" r="0.71" fill="#eef1ff" opacity="0.74"/>
+      <circle cx="791.0" cy="219.6" r="1.45" fill="#eef1ff" opacity="0.25"/>
+      <circle cx="1201.5" cy="693.0" r="0.57" fill="#eef1ff" opacity="0.55"/>
+      <circle cx="281.4" cy="862.2" r="1.23" fill="#eef1ff" opacity="0.29"/>
+      <circle cx="398.7" cy="763.5" r="1.13" fill="#eef1ff" opacity="0.81"/>
+      <circle cx="1068.1" cy="889.1" r="1.35" fill="#eef1ff" opacity="0.92"/>
+      <circle cx="1426.3" cy="551.4" r="1.55" fill="#eef1ff" opacity="0.6"/>
+      <circle cx="1328.9" cy="493.1" r="1.84" fill="#eef1ff" opacity="0.77"/>
+      <circle cx="759.5" cy="233.3" r="0.8" fill="#eef1ff" opacity="0.7"/>
+      <circle cx="1225.3" cy="469.2" r="1.4" fill="#eef1ff" opacity="0.44"/>
+      <circle cx="124.0" cy="257.2" r="0.83" fill="#eef1ff" opacity="0.47"/>
+      <circle cx="864.2" cy="124.5" r="0.77" fill="#eef1ff" opacity="0.74"/>
+      <circle cx="1130.3" cy="57.8" r="1.05" fill="#eef1ff" opacity="0.63"/>
+      <circle cx="665.2" cy="186.2" r="1.07" fill="#eef1ff" opacity="0.88"/>
+      <circle cx="934.5" cy="626.0" r="1.77" fill="#eef1ff" opacity="0.79"/>
+      <circle cx="608.6" cy="5.3" r="0.96" fill="#eef1ff" opacity="0.78"/>
+      <circle cx="1365.5" cy="858.1" r="1.07" fill="#eef1ff" opacity="0.77"/>
+      <circle cx="873.8" cy="542.9" r="0.75" fill="#eef1ff" opacity="0.4"/>
+      <circle cx="697.3" cy="26.1" r="0.94" fill="#eef1ff" opacity="0.73"/>
+      <circle cx="646.9" cy="148.5" r="1.15" fill="#eef1ff" opacity="0.34"/>
+      <circle cx="995.6" cy="24.3" r="1.03" fill="#eef1ff" opacity="0.65"/>
+      <circle cx="43.4" cy="578.5" r="0.62" fill="#eef1ff" opacity="0.57"/>
+      <circle cx="80.5" cy="341.2" r="0.74" fill="#eef1ff" opacity="0.48"/>
+      <circle cx="1218.0" cy="341.2" r="1.6" fill="#eef1ff" opacity="0.83"/>
+      <circle cx="403.6" cy="73.7" r="0.43" fill="#eef1ff" opacity="0.63"/>
+      <circle cx="1599.9" cy="315.0" r="1.44" fill="#eef1ff" opacity="0.8"/>
+      <circle cx="1042.8" cy="678.8" r="1.92" fill="#eef1ff" opacity="0.39"/>
+      <circle cx="32.6" cy="137.1" r="0.6" fill="#eef1ff" opacity="0.72"/>
+      <circle cx="902.4" cy="196.2" r="1.52" fill="#eef1ff" opacity="0.79"/>
+      <circle cx="268.5" cy="546.5" r="1.6" fill="#eef1ff" opacity="0.33"/>
+      <circle cx="1310.9" cy="868.2" r="0.57" fill="#eef1ff" opacity="0.27"/>
+      <circle cx="499.1" cy="609.6" r="1.93" fill="#eef1ff" opacity="0.53"/>
+      <circle cx="1144.0" cy="68.4" r="1.5" fill="#eef1ff" opacity="0.69"/>
+      <circle cx="163.0" cy="695.2" r="1.76" fill="#eef1ff" opacity="0.67"/>
+      <circle cx="193.7" cy="885.5" r="1.65" fill="#eef1ff" opacity="0.49"/>
+      <circle cx="685.4" cy="333.5" r="1.21" fill="#eef1ff" opacity="0.49"/>
+      <circle cx="1359.3" cy="740.1" r="0.57" fill="#eef1ff" opacity="0.92"/>
+      <circle cx="1016.9" cy="745.8" r="1.53" fill="#eef1ff" opacity="0.55"/>
+      <circle cx="1174.1" cy="868.9" r="0.83" fill="#eef1ff" opacity="0.82"/>
+      <circle cx="861.1" cy="435.1" r="1.1" fill="#eef1ff" opacity="0.76"/>
+      <circle cx="429.4" cy="766.5" r="1.73" fill="#eef1ff" opacity="0.31"/>
+      <circle cx="1410.6" cy="219.5" r="1.14" fill="#eef1ff" opacity="0.68"/>
+      <circle cx="606.4" cy="25.8" r="1.76" fill="#eef1ff" opacity="0.38"/>
+      <circle cx="339.4" cy="718.0" r="0.94" fill="#eef1ff" opacity="0.87"/>
+      <circle cx="1121.9" cy="248.6" r="0.42" fill="#eef1ff" opacity="0.91"/>
+      <circle cx="137.0" cy="648.1" r="1.18" fill="#eef1ff" opacity="0.78"/>
+      <circle cx="1105.0" cy="581.3" r="1.19" fill="#eef1ff" opacity="0.81"/>
+      <circle cx="148.9" cy="199.4" r="1.51" fill="#eef1ff" opacity="0.46"/>
+      <circle cx="930.5" cy="425.9" r="1.25" fill="#eef1ff" opacity="0.55"/>
+      <circle cx="1193.5" cy="297.7" r="1.52" fill="#eef1ff" opacity="0.44"/>
+      <circle cx="402.2" cy="108.6" r="0.71" fill="#eef1ff" opacity="0.33"/>
+      <circle cx="857.4" cy="686.0" r="0.7" fill="#eef1ff" opacity="0.4"/>
+      <circle cx="774.7" cy="652.1" r="1.96" fill="#eef1ff" opacity="0.62"/>
+      <circle cx="452.8" cy="90.5" r="0.71" fill="#eef1ff" opacity="0.41"/>
+      <circle cx="287.1" cy="12.7" r="1.25" fill="#eef1ff" opacity="0.44"/>
+      <circle cx="1558.9" cy="498.0" r="1.52" fill="#eef1ff" opacity="0.34"/>
+      <circle cx="1389.5" cy="441.8" r="1.8" fill="#eef1ff" opacity="0.65"/>
+      <circle cx="751.0" cy="396.4" r="0.69" fill="#eef1ff" opacity="0.29"/>
+      <circle cx="1505.7" cy="430.0" r="1.72" fill="#eef1ff" opacity="0.53"/>
+      <circle cx="118.5" cy="566.5" r="0.49" fill="#eef1ff" opacity="0.35"/>
+      <circle cx="900.5" cy="273.5" r="1.99" fill="#eef1ff" opacity="0.33"/>
+      <circle cx="1223.1" cy="545.7" r="1.67" fill="#eef1ff" opacity="0.41"/>
+      <circle cx="836.1" cy="405.5" r="1.11" fill="#eef1ff" opacity="0.85"/>
+      <circle cx="1584.1" cy="274.8" r="1.39" fill="#eef1ff" opacity="0.68"/>
+      <circle cx="1184.1" cy="852.8" r="0.73" fill="#eef1ff" opacity="0.4"/>
+      <circle cx="1056.7" cy="141.4" r="0.68" fill="#eef1ff" opacity="0.3"/>
+      <circle cx="4.3" cy="405.5" r="1.35" fill="#eef1ff" opacity="0.45"/>
+      <circle cx="370.4" cy="636.3" r="1.52" fill="#eef1ff" opacity="0.57"/>
+      <circle cx="1099.8" cy="831.5" r="1.66" fill="#eef1ff" opacity="0.69"/>
+      <circle cx="1057.9" cy="840.3" r="1.08" fill="#eef1ff" opacity="0.63"/>
+      <circle cx="1036.2" cy="817.6" r="1.72" fill="#eef1ff" opacity="0.3"/>
+      <circle cx="265.5" cy="276.9" r="1.6" fill="#eef1ff" opacity="0.65"/>
+      <circle cx="461.8" cy="111.9" r="1.5" fill="#eef1ff" opacity="0.74"/>
+      <circle cx="1508.3" cy="450.4" r="1.19" fill="#eef1ff" opacity="0.31"/>
+      <circle cx="63.8" cy="388.8" r="0.92" fill="#eef1ff" opacity="0.43"/>
+      <circle cx="146.1" cy="865.7" r="1.74" fill="#eef1ff" opacity="0.65"/>
+      <circle cx="1521.3" cy="899.6" r="1.48" fill="#eef1ff" opacity="0.44"/>
+      <circle cx="64.4" cy="680.6" r="1.15" fill="#eef1ff" opacity="0.71"/>
+      <circle cx="1465.7" cy="163.3" r="1.34" fill="#eef1ff" opacity="0.69"/>
+      <circle cx="786.8" cy="82.1" r="0.96" fill="#eef1ff" opacity="0.48"/>
+      <circle cx="1072.2" cy="772.0" r="0.93" fill="#eef1ff" opacity="0.74"/>
+      <circle cx="461.1" cy="850.7" r="1.7" fill="#eef1ff" opacity="0.64"/>
+      <circle cx="727.7" cy="283.1" r="0.92" fill="#eef1ff" opacity="0.93"/>
+      <circle cx="646.7" cy="463.1" r="1.98" fill="#eef1ff" opacity="0.71"/>
+      <circle cx="868.1" cy="371.9" r="0.7" fill="#eef1ff" opacity="0.5"/>
+    </g>
+    <g>
+      <circle cx="1210.3" cy="562.9" r="2.51" fill="#fff" opacity="0.9"/><circle cx="1210.3" cy="562.9" r="7.529999999999999" fill="#eef1ff" opacity="0.12"/>
+      <circle cx="325.7" cy="494.3" r="2.71" fill="#fff" opacity="0.9"/><circle cx="325.7" cy="494.3" r="8.129999999999999" fill="#eef1ff" opacity="0.12"/>
+      <circle cx="701.0" cy="628.4" r="1.75" fill="#fff" opacity="0.9"/><circle cx="701.0" cy="628.4" r="5.25" fill="#eef1ff" opacity="0.12"/>
+      <circle cx="1557.0" cy="548.0" r="1.89" fill="#fff" opacity="0.9"/><circle cx="1557.0" cy="548.0" r="5.67" fill="#eef1ff" opacity="0.12"/>
+      <circle cx="253.4" cy="495.8" r="2.26" fill="#fff" opacity="0.9"/><circle cx="253.4" cy="495.8" r="6.779999999999999" fill="#eef1ff" opacity="0.12"/>
+      <circle cx="149.1" cy="893.0" r="2.7" fill="#fff" opacity="0.9"/><circle cx="149.1" cy="893.0" r="8.100000000000001" fill="#eef1ff" opacity="0.12"/>
+      <circle cx="738.3" cy="105.7" r="2.6" fill="#fff" opacity="0.9"/><circle cx="738.3" cy="105.7" r="7.800000000000001" fill="#eef1ff" opacity="0.12"/>
+      <circle cx="797.4" cy="644.9" r="2.21" fill="#fff" opacity="0.9"/><circle cx="797.4" cy="644.9" r="6.63" fill="#eef1ff" opacity="0.12"/>
+      <circle cx="437.5" cy="751.3" r="2.78" fill="#fff" opacity="0.9"/><circle cx="437.5" cy="751.3" r="8.34" fill="#eef1ff" opacity="0.12"/>
+      <circle cx="390.0" cy="496.1" r="2.06" fill="#fff" opacity="0.9"/><circle cx="390.0" cy="496.1" r="6.18" fill="#eef1ff" opacity="0.12"/>
+      <circle cx="1475.0" cy="457.4" r="2.66" fill="#fff" opacity="0.9"/><circle cx="1475.0" cy="457.4" r="7.98" fill="#eef1ff" opacity="0.12"/>
+      <circle cx="1382.4" cy="248.6" r="2.55" fill="#fff" opacity="0.9"/><circle cx="1382.4" cy="248.6" r="7.6499999999999995" fill="#eef1ff" opacity="0.12"/>
+      <circle cx="663.9" cy="840.8" r="2.21" fill="#fff" opacity="0.9"/><circle cx="663.9" cy="840.8" r="6.63" fill="#eef1ff" opacity="0.12"/>
+      <circle cx="1312.9" cy="254.6" r="1.96" fill="#fff" opacity="0.9"/><circle cx="1312.9" cy="254.6" r="5.88" fill="#eef1ff" opacity="0.12"/>
+    </g>
+    <g>
+      <line x1="863.0" y1="299.7" x2="954.0" y2="356.7" stroke="#eef1ff" stroke-width="1.4" opacity="0.35" stroke-linecap="round"/>
+      <line x1="293.2" y1="184.6" x2="375.2" y2="224.6" stroke="#eef1ff" stroke-width="1.4" opacity="0.35" stroke-linecap="round"/>
+      <line x1="817.5" y1="185.9" x2="906.5" y2="244.9" stroke="#eef1ff" stroke-width="1.4" opacity="0.35" stroke-linecap="round"/>
+    </g>
+  </svg>
+</div>
 
-<section id="hero">
-  <div class="content">
-    <h1>Para ti</h1>
-    <p>antes de que sigas, respira un momento.<br>esto tomó tiempo, y es solo tuyo.</p>
-    <div class="flecha"></div>
+<!-- experiencia inicial: una capa a la vez, nada mas en pantalla -->
+<div id="escenario">
+  <div class="capa activa" id="capaPortal">
+    <p id="hintPortal">toca en cualquier lugar</p>
   </div>
-</section>
 
-<section id="intro">
-  <div class="content">
-    <p>
-      Dicen que el universo es casi todo vacío y silencio, y que aun así, entre tanta distancia,
-      algunas cosas logran encontrarse. No sé bien cómo explicar lo que siento, pero se parece a eso:
-      a algo que atraviesa el tiempo para llegar exactamente a donde tú estás.
+  <div class="capa" id="capaCierraOjos">
+    <p>cierra los ojitos un segundito...</p>
+  </div>
+
+  <div class="capa" id="capaRecuerdo">
+    <p class="serif">
+      Dicen que el universo es casi todo vacio y silencio, y que aun asi, entre tanta distancia,
+      algunas cosas logran encontrarse. No se bien como explicar lo que siento, pero se parece a eso:
+      a algo que atraviesa el tiempo para llegar exactamente a donde tu estas.
     </p>
-    <p>
-      A veces pienso que no hacía falta que fueras perfecta para que yo te mirara distinto —
-      simplemente lo eres, con tus días buenos y los otros también. Como en esas historias donde
-      alguien deja de ver monstruos y empieza a ver a la persona de verdad. Contigo dejé de tener miedo
+    <p class="serif">
+      A veces pienso que no hacia falta que fueras perfecta para que yo te mirara distinto &mdash;
+      simplemente lo eres, con tus dias buenos y los otros tambien. Como en esas historias donde
+      alguien deja de ver monstruos y empieza a ver a la persona de verdad. Contigo deje de tener miedo
       a que me vieran tal cual soy.
     </p>
-    <p class="firma">sigue bajando 🤍</p>
   </div>
-</section>
 
-<section id="experiencia">
-  <div class="content">
-    <h2 class="serif">un ratito, solo para nosotros</h2>
+  <div class="capa" id="capaExperiencia">
     <div class="escena">
-      <div id="cielo-cats">
-        <img id="gatoBlanco" class="gato" src="cat_white.svg" alt="gatito blanco">
-        <img id="gatoNegro" class="gato" src="cat_black.svg" alt="gatito negro">
-        <div class="ovillo"></div>
-        <!-- las fotos se insertan aquí dinámicamente -->
-      </div>
+      <div id="ambiente"></div>
+      <img id="gatoBlanco" class="gato" src="cat_white.svg" alt="gatito blanco">
+      <img id="gatoNegro" class="gato" src="cat_black.svg" alt="gatito negro">
+      <div class="ovillo"></div>
+      <!-- las fotos se insertan aqui dinamicamente -->
       <div id="audioCentral" class="audio-central">
         <div class="onda"></div><div class="onda"></div><div class="onda"></div><div class="onda"></div><div class="onda"></div>
       </div>
     </div>
-    <div class="reproductor">
-      <button id="playBtn">▶</button>
-      <div id="barra"><div id="progreso"></div></div>
-    </div>
-    <p class="subtitulo" id="subtitulo">toca play y cierra los ojos un segundo</p>
-
-    <div id="corazon-wrap">
-      <svg id="corazonBtn" width="70" height="70" viewBox="0 0 100 100">
-        <path d="M50 85 C10 60 5 30 30 18 C42 12 50 22 50 22 C50 22 58 12 70 18 C95 30 90 60 50 85 Z"
-              fill="#e6a5b8" stroke="#f3efe6" stroke-width="2"/>
-        <rect x="42" y="34" width="16" height="14" rx="2" fill="#0a0e24" stroke="#e7c07a" stroke-width="2"/>
-        <path d="M45 34 v-6 a5 5 0 0 1 10 0 v6" fill="none" stroke="#e7c07a" stroke-width="2"/>
-      </svg>
-      <span>toca para abrirlo</span>
-    </div>
+    <p class="subtitulo" id="subtitulo"></p>
   </div>
-</section>
 
+  <div class="capa" id="capaCorazon">
+    <svg id="corazonBtn" width="72" height="72" viewBox="0 0 100 100">
+      <path d="M50 85 C10 60 5 30 30 18 C42 12 50 22 50 22 C50 22 58 12 70 18 C95 30 90 60 50 85 Z"
+            fill="#e6a5b8" stroke="#f3efe6" stroke-width="2"/>
+      <rect x="42" y="34" width="16" height="14" rx="2" fill="#0a0e24" stroke="#e7c07a" stroke-width="2"/>
+      <path d="M45 34 v-6 a5 5 0 0 1 10 0 v6" fill="none" stroke="#e7c07a" stroke-width="2"/>
+    </svg>
+    <span>toca para abrirlo</span>
+  </div>
+</div>
+
+<!-- modal de la clave -->
 <div class="modal-fondo" id="modalFondo">
   <div class="modal">
-    <h3 class="serif">solo tú sabes esto</h3>
-    <label>1. ¿Cuál es la inicial del nombre de mi peluchito?</label>
+    <h3 class="serif">solo tu sabes esto</h3>
+    <label>1. Cual es la inicial del nombre de mi peluchito?</label>
     <input id="r1" maxlength="4">
-    <label>2. ¿Cuántas manzanitas mide Hello Kitty?</label>
+    <label>2. Cuantas manzanitas mide Hello Kitty?</label>
     <input id="r2" maxlength="4">
     <label>3. Inicial de la protagonista de Kimi ni Todoke</label>
     <input id="r3" maxlength="4">
-    <label>4. ¿Cuántos añitos tiene mi perrito Tomy?</label>
+    <label>4. Cuantos anitos tiene mi perrito Tomy?</label>
     <input id="r4" maxlength="4">
     <button id="verificarBtn">abrir</button>
     <div id="errorMsg"></div>
   </div>
 </div>
 
+<!-- la carta, distinta de lo que se dice en el video -->
 <section id="carta-final">
   <div class="content">
     <div class="pergamino">
-      <p>Mi amor,</p>
+      <p>Hola, mi vida.</p>
       <p>
-        si estás leyendo esto es porque llegaste hasta el final, y eso ya dice mucho de nosotros.
-        Quiero que sepas que cuando pienso en lo que hemos vivido, no pienso en lo perfecto que fue,
-        sino en lo real. En las veces que me quedé sin palabras solo por verte reír, en las noches
-        eternas hablando de todo y de nada, en cómo, sin darme cuenta, empecé a construir mis planes
-        pensando en ti dentro de ellos. 🌙
+        Si llegaste hasta aqui es porque resolviste el candado &mdash; y eso ya dice algo bonito de nosotros:
+        que hay cositas pequenas que solo tu y yo conocemos, y que siguen siendo nuestras pase lo que pase.
       </p>
       <p>
-        Sé que la hemos cagado, los dos, y que últimamente sentimos que esto se nos escapa de las
-        manos. Pero si algo tengo claro es que no quiero soltarlo. No quiero que seamos "casi" nada más.
-        Quiero que seamos algo de verdad, con nombre, con compromiso, con ganas. ✨
+        Quiero contarte algo con calma, sin apuros. Hay noches en las que pienso en todo lo que hemos
+        discutido ultimamente y me da miedo, si. Pero despues pienso en ti y ese miedo se hace mas chiquito
+        que las ganas de seguir intentandolo. No busco que todo sea perfecto, solo busco que sigamos
+        eligiendonos, incluso en los dias en que cueste un poco mas.
       </p>
       <p>
-        Ya te lo he dicho, pero te lo repito aquí, escrito, para que no se lo lleve el viento: eres la
-        mujer que siempre quise, aunque nunca supe cómo pedirlo. Escribí 100 razones por las que te amo
-        — esas te las voy a leer despacito, otro día, mirándote a los ojos. Hoy solo necesito decirte esto:
-        gracias por enseñarme a no tenerle miedo a que me vean de verdad. (￣▽￣)ノ
+        Gracias por aguantarme, por las risas tontas de madrugada, por hacerme sentir que puedo ser
+        exactamente como soy sin que eso te espante. Contigo todo pesa menos.
       </p>
-      <p>esto es solo el principio de la carta — sigue abajo, falta lo más importante. 💌</p>
+      <p class="firma-carta">te amo, tal cual, con todo lo que hemos roto y lo que estamos reconstruyendo
+        (´｡• ᵕ •｡`) ♡ 💕🩷</p>
     </div>
     <div class="gatito-final">
       <svg width="150" height="150" viewBox="0 0 150 150">
@@ -230,44 +474,42 @@
         <circle cx="65" cy="62" r="3" fill="#2a2a2a"/>
         <circle cx="85" cy="62" r="3" fill="#2a2a2a"/>
         <path d="M70 70 q5 4 10 0" stroke="#c98198" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <!-- pata sosteniendo el celular -->
-        <ellipse cx="108" cy="96" rx="9" ry="16" fill="#f3efe6" stroke="#c9c4b6" stroke-width="2.5" transform="rotate(18 108 96)"/>
-        <rect x="96" y="58" width="34" height="56" rx="7" fill="#0a0e24" stroke="#e7c07a" stroke-width="2.5" transform="rotate(10 113 86)"/>
-        <rect x="100" y="64" width="26" height="42" rx="2" fill="#141838" transform="rotate(10 113 86)"/>
-        <path d="M108 82 l8 6 -8 6 Z" fill="#e7c07a" transform="rotate(10 113 86)"/>
+        <g class="mini-celular">
+          <circle cx="113" cy="86" r="24" fill="#e7c07a" opacity="0.25" class="glow-cel"/>
+          <ellipse cx="108" cy="96" rx="9" ry="16" fill="#f3efe6" stroke="#c9c4b6" stroke-width="2.5" transform="rotate(18 108 96)"/>
+          <rect x="96" y="58" width="34" height="56" rx="7" fill="#0a0e24" stroke="#e7c07a" stroke-width="2.5" transform="rotate(10 113 86)"/>
+          <rect x="100" y="64" width="26" height="42" rx="2" fill="#141838" transform="rotate(10 113 86)"/>
+          <path d="M108 82 l8 6 -8 6 Z" fill="#e7c07a" transform="rotate(10 113 86)"/>
+        </g>
       </svg>
       <p>esto es para ti</p>
+      <p class="pista">toca su celular &#128241;</p>
     </div>
   </div>
 </section>
 
-<section id="video-sec">
-  <div class="content">
-    <h2 class="serif">hola, esta vez sí enseñé mi cara</h2>
-    <video id="miVideo" controls poster="">
+<!-- video, oculto hasta que se toque el celular del gatito. sin preview -->
+<div class="video-fondo" id="videoFondo">
+  <div class="video-caja">
+    <button id="cerrarVideo" aria-label="cerrar">&times;</button>
+    <p class="video-titulo">para ti, mi consentida</p>
+    <video id="miVideo" playsinline preload="none" controls>
       <source src="mi_mensaje.mp4" type="video/mp4">
     </video>
-    <div class="guion">
-      <strong>guion sugerido para tu video</strong> (bórralo cuando grabes el tuyo):<br><br>
-      "Hola... esta vez sí enseñé mi cara. Y lo hago principalmente porque tú borraste esta inseguridad
-      en mí. Todo esto lo hice para ti, porque eres lo que siempre deseé. Ya te lo dije: para mí eres
-      la mujer perfecta, y escribí 100 razones por las que te amo — esas no te las voy a leer ahorita.
-      Primero quiero que me respondas algo..."
-    </div>
   </div>
-</section>
+</div>
 
 <section id="propuesta">
   <div class="content">
-    <h2 class="serif">¿quieres ser mi novia?</h2>
+    <h2 class="serif">quieres ser mi novia?</h2>
     <p>
-      sé que decir esto así puede sonar apresurado, pero no soporto más estar sin estar, andando sin
-      andar. te lo pregunto porque quiero un compromiso de verdad. confío en ti como tú confías en mí,
-      y aunque no hayamos tenido las mejores épocas, sé que esto mejora si seguimos juntos. no quiero
-      la vida que sueño con nadie más que contigo. pinky promise. 🤍
+      se que decir esto asi puede sonar apresurado, pero no soporto mas estar sin estar, andando sin
+      andar. te lo pregunto porque quiero un compromiso de verdad. confio en ti como tu confias en mi,
+      y aunque no hayamos tenido las mejores epocas, se que esto mejora si seguimos juntos. no quiero
+      la vida que sueno con nadie mas que contigo. pinky promise. &#129293;
     </p>
     <div class="botones">
-      <button id="siBtn">sí, quiero</button>
+      <button id="siBtn">si, quiero</button>
       <button id="noBtn">no</button>
     </div>
     <div id="resultado"></div>
@@ -275,31 +517,76 @@
 </section>
 
 <script>
-/* ---------- estrellas ---------- */
-const canvas = document.getElementById('stars');
-const ctx = canvas.getContext('2d');
-let W,H,estrellas=[];
-function resize(){W=canvas.width=window.innerWidth;H=canvas.height=document.body.scrollHeight;
-  estrellas=Array.from({length:Math.floor(W*H/9000)},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+.2,f:Math.random()*0.02+0.005,o:Math.random()}));}
-window.addEventListener('resize',resize); resize();
-function dibujarEstrellas(){
-  ctx.clearRect(0,0,W,H);
-  estrellas.forEach(s=>{
-    s.o += s.f; const alpha = 0.4+0.6*Math.abs(Math.sin(s.o));
-    ctx.fillStyle=`rgba(238,241,255,${alpha})`;
-    ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fill();
-  });
-  requestAnimationFrame(dibujarEstrellas);
-}
-dibujarEstrellas();
+/* ============ estado inicial: pantalla bloqueada mientras dura la experiencia ============ */
+document.documentElement.classList.add('bloqueado');
 
-/* ---------- fotos flotantes (coloca tus fotos en una carpeta "fotos/" con estos nombres, o cambia el arreglo) ---------- */
+/* ============ referencias ============ */
+const capaPortal = document.getElementById('capaPortal');
+const hintPortal = document.getElementById('hintPortal');
+const capaCierraOjos = document.getElementById('capaCierraOjos');
+const capaRecuerdo = document.getElementById('capaRecuerdo');
+const capaExperiencia = document.getElementById('capaExperiencia');
+const capaCorazon = document.getElementById('capaCorazon');
+const escenario = document.getElementById('escenario');
+const ambiente = document.getElementById('ambiente');
+const subtitulo = document.getElementById('subtitulo');
+const cielo = document.querySelector('.escena');
+
+function mostrarSolo(capa){
+  [capaPortal, capaCierraOjos, capaRecuerdo, capaExperiencia, capaCorazon].forEach(c=>{
+    if(c===capa) c.classList.add('activa'); else c.classList.remove('activa');
+  });
+}
+
+/* pista sutil para saber que se puede tocar, sin boton visible */
+setTimeout(()=>hintPortal.classList.add('mostrar'), 2200);
+
+/* ============ audio principal ============ */
+const audio = new Audio('Runaway.mp3');
+const mensajeVoz = new Audio('mensaje.m4a'); // tu audio de voz
+const audioCentral = document.getElementById('audioCentral');
+let iniciado = false;
+let mostroCierraOjos = false, mostroRecuerdo = false, mostroExperiencia = false, mostroCorazon = false;
+let vozIniciada = false;
+
+const VOL_NORMAL = 0.55;
+const VOL_DUCK = 0.18;
+function fadeVolumen(el, destino, ms=800){
+  const inicio = el.volume, t0 = performance.now();
+  function paso(t){
+    const p = Math.min((t-t0)/ms,1);
+    el.volume = inicio + (destino-inicio)*p;
+    if(p<1) requestAnimationFrame(paso);
+  }
+  requestAnimationFrame(paso);
+}
+mensajeVoz.addEventListener('play', ()=>{
+  audioCentral.classList.add('activo');
+  fadeVolumen(audio, VOL_DUCK);
+});
+mensajeVoz.addEventListener('ended', ()=>{
+  audioCentral.classList.remove('activo');
+  fadeVolumen(audio, VOL_NORMAL);
+});
+
+function iniciar(){
+  if(iniciado) return;
+  iniciado = true;
+  audio.volume = 0.55;
+  audio.play().catch(()=>{
+    hintPortal.textContent = 'agrega el archivo Runaway.mp3 en esta misma carpeta';
+    hintPortal.classList.add('mostrar');
+  });
+  mostrarSolo(null); // nada en pantalla, solo el universo y la musica
+}
+capaPortal.addEventListener('click', iniciar);
+
+/* ============ fotos flotantes (coloca tus fotos en una carpeta "fotos/" nombradas 1.jpg, 2.jpg, etc.) ============ */
 const fotos = ["fotos/1.jpg","fotos/2.jpg","fotos/3.jpg","fotos/4.jpg"];
-const cielo = document.getElementById('cielo-cats');
 let fotosPuestas = false;
 function ponerFotos(){
   if(fotosPuestas) return; fotosPuestas = true;
-  const posiciones = [{top:'6%',left:'8%'},{top:'10%',right:'10%'},{top:'55%',left:'4%'},{top:'50%',right:'6%'}];
+  const posiciones = [{top:'4%',left:'6%'},{top:'8%',right:'8%'},{top:'58%',left:'2%'},{top:'52%',right:'4%'}];
   fotos.forEach((src,i)=>{
     const img = document.createElement('img');
     img.src = src; img.className='foto'; img.style.setProperty('--rot', (Math.random()*10-5)+'deg');
@@ -310,93 +597,71 @@ function ponerFotos(){
   });
 }
 
-/* ---------- audio, color y subtítulos ---------- */
-const audio = new Audio('Runaway.mp3');           // la canción de fondo
-const mensaje = new Audio('mensaje.mp3');          // tu audio de voz (agrégalo con este nombre)
-const playBtn = document.getElementById('playBtn');
-const progreso = document.getElementById('progreso');
-const subtitulo = document.getElementById('subtitulo');
-const corazonWrap = document.getElementById('corazon-wrap');
-const audioCentral = document.getElementById('audioCentral');
-
-const VOL_NORMAL = 0.45;  // la canción no suena muy alta
-const VOL_DUCK   = 0.2;   // se baja mientras se escucha una voz, pero nunca desaparece
-function fadeVolumen(el, destino, ms=700){
-  const inicio = el.volume, t0 = performance.now();
-  function paso(t){
-    const p = Math.min((t-t0)/ms,1);
-    el.volume = inicio + (destino-inicio)*p;
-    if(p<1) requestAnimationFrame(paso);
-  }
-  requestAnimationFrame(paso);
-}
-function bajarCancion(){ if(!audio.paused) fadeVolumen(audio, VOL_DUCK); }
-function subirCancion(){ if(!audio.paused) fadeVolumen(audio, VOL_NORMAL); }
-
-let iniciado = false;
-playBtn.addEventListener('click', ()=>{
-  if(!iniciado){
-    iniciado = true;
-    playBtn.textContent = '❚❚';
-    subtitulo.textContent = "cierra los ojos un segundito...";
-    setTimeout(()=>{
-      audio.volume = VOL_NORMAL;
-      audio.play().catch(()=>{ subtitulo.textContent = "agrega 'Runaway.mp3' en esta misma carpeta"; });
-    }, 4000);
-    setTimeout(()=>{
-      mensaje.play().catch(()=>{ subtitulo.textContent = "agrega tu 'mensaje.mp3' en esta misma carpeta"; });
-    }, 8000);
-  } else {
-    if(audio.paused && mensaje.paused){
-      audio.play(); if(mensaje.currentTime>0 && !mensaje.ended) mensaje.play();
-      playBtn.textContent = '❚❚';
-    } else {
-      audio.pause(); mensaje.pause();
-      playBtn.textContent = '▶';
-    }
-  }
-});
-
-mensaje.addEventListener('play', ()=>{ audioCentral.classList.add('activo'); bajarCancion(); });
-mensaje.addEventListener('pause', ()=>{ audioCentral.classList.remove('activo'); subirCancion(); });
-mensaje.addEventListener('ended', ()=>{ audioCentral.classList.remove('activo'); subirCancion(); corazonWrap.classList.add('visible'); });
-
+/* ============ lineas que van de tristes a alegres ============ */
 const lineas = [
-  {p:0.00, t:"hubo un tiempo en que esto se sintió difícil..."},
-  {p:0.18, t:"y no siempre supimos cómo decirnos las cosas"},
-  {p:0.36, t:"pero incluso en lo gris, seguiste siendo mi lugar favorito"},
-  {p:0.55, t:"y poco a poco todo empezó a tener más color"},
-  {p:0.70, t:"contigo hasta lo difícil se sintió posible"},
-  {p:0.85, t:"gracias por quedarte, incluso cuando no fue fácil"},
-  {p:0.97, t:"esto es para ti. todo esto es para ti"},
+  {p:0.00, t:"hubo un tiempo en que esto se sintio dificil..."},
+  {p:0.16, t:"y no siempre supimos como decirnos las cosas"},
+  {p:0.34, t:"pero incluso en lo gris, seguiste siendo mi lugar favorito"},
+  {p:0.52, t:"y poco a poco todo empezo a tener mas color"},
+  {p:0.68, t:"contigo hasta lo dificil se sintio posible"},
+  {p:0.84, t:"gracias por quedarte, incluso cuando no fue facil"},
+  {p:0.96, t:"esto es para ti. todo esto es para ti"},
 ];
 
+/* ============ secuencia por tiempo: cierra los ojitos -> recuerdo -> experiencia ============ */
 audio.addEventListener('timeupdate', ()=>{
   if(!audio.duration) return;
-  const p = audio.currentTime/audio.duration;
-  progreso.style.width = (p*100)+'%';
+  const t = audio.currentTime;
+  const p = t/audio.duration;
 
-  // color de fondo: de tonos fríos/oscuros a cálidos
-  const fria = [10,14,36], calida=[70,30,60];
-  const mix = fria.map((c,i)=>Math.round(c+(calida[i]-c)*p));
-  cielo.style.background = `radial-gradient(ellipse at 50% 100%, rgb(${mix[0]},${mix[1]},${mix[2]}), transparent 75%)`;
+  if(!mostroCierraOjos && t>=5){
+    mostroCierraOjos = true;
+    mostrarSolo(capaCierraOjos);
+  }
+  if(!mostroRecuerdo && t>=11){
+    mostroRecuerdo = true;
+    mostrarSolo(capaRecuerdo);
+  }
+  if(!mostroExperiencia && t>=27){
+    mostroExperiencia = true;
+    mostrarSolo(capaExperiencia);
+  }
 
-  const linea = [...lineas].reverse().find(l=>p>=l.p);
-  if(linea) subtitulo.textContent = linea.t;
+  if(mostroExperiencia && !vozIniciada && t>=29){
+    vozIniciada = true;
+    mensajeVoz.volume = 0.95;
+    mensajeVoz.play().catch(()=>{});
+  }
 
-  if(p>0.4) ponerFotos();
-  if(p>=0.92) corazonWrap.classList.add('visible');
+  if(mostroExperiencia && !mostroCorazon){
+    // color de ambiente: de frio/oscuro a calido, cada vez mas presente
+    const fria=[20,26,58], calida=[214,110,150];
+    const mezcla = fria.map((c,i)=>Math.round(c+(calida[i]-c)*p));
+    ambiente.style.background = `radial-gradient(ellipse at 50% 60%, rgba(${mezcla[0]},${mezcla[1]},${mezcla[2]},${0.15+p*0.5}) 0%, rgba(5,7,20,0) 72%)`;
+
+    const linea = [...lineas].reverse().find(l=>p>=l.p);
+    if(linea) subtitulo.textContent = linea.t;
+
+    if(p>0.42) ponerFotos();
+  }
+
+  if(!mostroCorazon && p>=0.96){
+    mostroCorazon = true;
+    mostrarSolo(capaCorazon);
+  }
 });
-audio.addEventListener('ended', ()=>{ playBtn.textContent='▶'; corazonWrap.classList.add('visible'); });
 
-/* ---------- corazón con clave encriptada ---------- */
+audio.addEventListener('ended', ()=>{
+  if(!mostroCorazon){
+    mostroCorazon = true;
+    mostrarSolo(capaCorazon);
+  }
+});
+
+/* ============ corazon con clave encriptada ============ */
 const modalFondo = document.getElementById('modalFondo');
-const gatoBlanco = document.getElementById('gatoBlanco');
-const gatoNegro = document.getElementById('gatoNegro');
-const ovillo = document.querySelector('.ovillo');
 document.getElementById('corazonBtn').addEventListener('click', ()=>{
   modalFondo.classList.add('abierto');
-  gatoBlanco.classList.add('pausado'); gatoNegro.classList.add('pausado'); ovillo.classList.add('pausado');
 });
 
 async function sha256(msg){
@@ -414,14 +679,45 @@ document.getElementById('verificarBtn').addEventListener('click', async ()=>{
   const err = document.getElementById('errorMsg');
   if(hash === HASH_CORRECTO){
     modalFondo.classList.remove('abierto');
+    escenario.classList.add('oculto');
+    document.documentElement.classList.remove('bloqueado');
     document.getElementById('carta-final').classList.add('visible');
-    document.getElementById('carta-final').scrollIntoView({behavior:'smooth'});
+    setTimeout(()=>{
+      document.getElementById('carta-final').scrollIntoView({behavior:'smooth'});
+    }, 300);
   } else {
-    err.textContent = "no es eso... inténtalo de nuevo";
+    err.textContent = "no es eso... intentalo de nuevo";
   }
 });
 
-/* ---------- botón "no" juguetón ---------- */
+/* ============ el gatito con el celular aparece al llegar a el, leyendo la carta ============ */
+const gatitoFinal = document.querySelector('.gatito-final');
+const observador = new IntersectionObserver((entradas)=>{
+  entradas.forEach(entrada=>{
+    if(entrada.isIntersecting) gatitoFinal.classList.add('visto');
+  });
+}, {threshold:0.45});
+observador.observe(gatitoFinal);
+
+/* ============ video: sin preview, solo aparece al tocar el celular ============ */
+const videoFondo = document.getElementById('videoFondo');
+const miVideo = document.getElementById('miVideo');
+document.querySelector('.mini-celular').addEventListener('click', ()=>{
+  videoFondo.classList.add('abierto');
+  miVideo.play().catch(()=>{});
+});
+document.getElementById('cerrarVideo').addEventListener('click', ()=>{
+  miVideo.pause();
+  videoFondo.classList.remove('abierto');
+});
+miVideo.addEventListener('ended', ()=>{
+  setTimeout(()=>{
+    videoFondo.classList.remove('abierto');
+    document.getElementById('propuesta').scrollIntoView({behavior:'smooth'});
+  }, 900);
+});
+
+/* ============ boton "no" juguetón ============ */
 const noBtn = document.getElementById('noBtn');
 noBtn.addEventListener('mouseenter', moverNo);
 noBtn.addEventListener('click', (e)=>{ e.preventDefault(); moverNo(); });
@@ -431,13 +727,8 @@ function moverNo(){
   const y = Math.random()*40-20;
   noBtn.style.transform = `translate(${x}px,${y}px)`;
 }
-const miVideo = document.getElementById('miVideo');
-miVideo.addEventListener('play', bajarCancion);
-miVideo.addEventListener('pause', subirCancion);
-miVideo.addEventListener('ended', subirCancion);
-
 document.getElementById('siBtn').addEventListener('click', ()=>{
-  document.getElementById('resultado').textContent = "te amo. gracias por decir que sí. 🤍✨";
+  document.getElementById('resultado').textContent = "te amo. gracias por decir que si. \u{1F90D}";
 });
 </script>
 </body>
